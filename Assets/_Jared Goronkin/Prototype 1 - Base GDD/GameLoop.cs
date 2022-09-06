@@ -239,9 +239,9 @@ public class GameLoop : MonoBehaviour
                                 p.veryRare += 20;
                                 break;
                             case SystemType.Home:
-                                p.common += 5000;
-                                p.rare += 3000;
-                                p.veryRare += 2000;
+                                p.common += 50;
+                                p.rare += 30;
+                                p.veryRare += 20;
                                 break;
                         }
                         yield return new WaitForSeconds(0.14f);
