@@ -9,6 +9,7 @@ namespace JaredGoronkinPrototype2
         private static List<Faction> factions = new();
         public static IList<Faction> Factions => factions.AsReadOnly();
         public string Name { get; private set; }
+        public int Resources = 0;
         public Faction(string name)
         {
             Name = name;

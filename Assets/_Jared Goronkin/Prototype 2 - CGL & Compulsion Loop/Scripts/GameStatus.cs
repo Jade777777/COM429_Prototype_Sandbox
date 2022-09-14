@@ -7,16 +7,14 @@ namespace JaredGoronkinPrototype2
 {
     public class GameStatus : MonoBehaviour
     {
-        /// <summary>
-        /// Waits for the signal and steps the game forward
-        /// consists of an enum for the current phase, as well 
-        /// </summary>
 
+        //Waits for the signal and steps the game forward
 
         public UnityEvent MainPhaseStart;
         public UnityEvent MainPhaseEnd;
         public UnityEvent CombatPhaseStart;
         public UnityEvent CombatPhaseEnd;
+        
         public Phase GamePhase { get; private set; }
 
         public static GameStatus Instance { get; private set; }
@@ -48,7 +46,7 @@ namespace JaredGoronkinPrototype2
                 GamePhase = Phase.Transition;
                 CombatPhaseEnd.Invoke();
                 Debug.Log("Starting " + GamePhase);
-                yield return new WaitForSeconds(1);
+                yield return new WaitForSeconds(0.2f);
 
 
                 endPhase = false;
@@ -62,7 +60,7 @@ namespace JaredGoronkinPrototype2
                 GamePhase = Phase.Transition;
                 MainPhaseEnd.Invoke();
                 Debug.Log("Starting " + GamePhase);
-                yield return new WaitForSeconds(1);
+                yield return new WaitForSeconds(0.2f);
 
 
                 endPhase = false;

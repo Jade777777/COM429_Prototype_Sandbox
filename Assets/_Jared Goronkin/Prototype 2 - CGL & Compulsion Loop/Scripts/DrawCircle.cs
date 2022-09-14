@@ -8,28 +8,33 @@ public class DrawCircle : MonoBehaviour
     public float radius = 3f;
     public float lineWidth = 0.2f;
     public Color color  = new(1f, 0.8f, 0.3f, 0.5f);
-
+    public bool faceCamera = true;
     private const float ThetaScale = 0.01f;
     private int Size;
     private float Theta;
     LineRenderer lineRenderer;
+    Material mat;
     void Start()
     {
-        Material mat = new(Shader.Find("Universal Render Pipeline/Unlit"));
-        mat.color = color;
+        mat = new(Shader.Find("Universal Render Pipeline/Unlit"));
+        
         lineRenderer = gameObject.AddComponent<LineRenderer>();
         lineRenderer.material = mat;
         lineRenderer.useWorldSpace = false;
         lineRenderer.loop = true;
-        SetValue();
+        ReDraw();
     }
 
     void Update()
     {
-        transform.rotation = Quaternion.LookRotation(transform.position - Camera.main.transform.position);
+        if (faceCamera == true)
+        {
+            transform.rotation = Quaternion.LookRotation(transform.position - Camera.main.transform.position);
+        }
     }
-    public void SetValue()
+    public void ReDraw()
     {
+        mat.color = color;
         lineRenderer.startWidth = lineWidth;
         lineRenderer.endWidth = lineWidth;
         Theta = 0f;

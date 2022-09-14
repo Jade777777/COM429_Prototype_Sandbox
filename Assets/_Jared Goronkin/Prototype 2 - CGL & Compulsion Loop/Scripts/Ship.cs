@@ -15,13 +15,17 @@ namespace JaredGoronkinPrototype2
         public HashSet<Faction> FactionHasScanInfo;
         
         public Stats stats = new();
-        public  Vector3 MoveTarget = Vector3.zero;
+        private Vector3 MoveTarget;
+        private Ship CombatTarget;
         public static List<Ship> Ships { get; private set; } = new();
 
         private void Awake()
         {
             Ships.Add(this);
+
         }
+        
+
 
         private void OnDestroy()
         {
@@ -37,10 +41,55 @@ namespace JaredGoronkinPrototype2
             MoveTarget = Vector3.MoveTowards(transform.position, target, stats.warpRange);
             return MoveTarget;
         }
+        IEnumerator Move()
+        {
+            Vector3 start = transform.position;
+
+            float warpTime = 0.3f;
+            float warpTimer = 0f;
+            while (warpTimer <= warpTime)
+            {
+
+                transform.position = Vector3.Lerp(start, MoveTarget, warpTimer / warpTime);
+                warpTimer += Time.deltaTime;
+                yield return null;
+            }
+            transform.position = MoveTarget;
+            yield return null;
+            MoveTarget = transform.position;
+        }
+
+
+        
+
+        public bool SetCombatTarget(Ship ship)
+        {
+            if(Vector3.Distance(ship.transform.position,transform.position)<= stats.weaponPower)
+            {
+                CombatTarget = ship;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+        public void StartCombat()
+        {
+            if (CombatTarget != null)
+            {
+                //Calculate combat stuff
+            }
+            else
+            {
+                //skip combat
+            }
+            CombatTarget = null;
+        }
+
+
         //--------------------
-
-
-
 
 
 
@@ -64,6 +113,9 @@ namespace JaredGoronkinPrototype2
 
         private void Start()
         {
+            MoveTarget = transform.position;
+            stats.faction = PlayerFactionControl.myFaction;
+            Debug.Log("Starting faction is " + stats.faction.Name);
             GameStatus.Instance.MainPhaseStart.AddListener(() => OnMainPhaseStart());
             GameStatus.Instance.MainPhaseEnd.AddListener(() => OnMainPhaseEnd());
             GameStatus.Instance.CombatPhaseStart.AddListener(() => OnCombatPhaseStart());
@@ -123,27 +175,12 @@ namespace JaredGoronkinPrototype2
         public void OnCombatPhaseEnd()
         {
             PlayerCombatUI.SetActive(false);
+            StartCombat();
             FactionHasScanInfo = new();
         }
         //-----------
 
  
-        IEnumerator Move()
-        {
-            Vector3 start = transform.position;
 
-            float warpTime = 0.3f;
-            float warpTimer = 0f;
-            while (warpTimer <= warpTime)
-            {
-
-                transform.position = Vector3.Lerp(start, MoveTarget, warpTimer / warpTime);
-                warpTimer += Time.deltaTime;
-                yield return null;
-            }
-            transform.position = MoveTarget;
-            yield return null;
-            MoveTarget = transform.position;
-        }
     }
 }

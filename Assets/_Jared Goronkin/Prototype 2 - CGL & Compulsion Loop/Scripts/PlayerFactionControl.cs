@@ -2,20 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using TMPro;
 namespace JaredGoronkinPrototype2
 {
     public class PlayerFactionControl : MonoBehaviour
     {
-        Faction myFaction;
+        public static Faction myFaction;
         IPlayerInteractable hoverTarget;
-        private void Start()
+        public TMP_Text Resources;
+        private void Awake()
         {
             myFaction = new Faction("Cognition Delegate");
         }
-
         private void Update()
         {
+            Resources.text = "Resources: " + myFaction.Resources;
             TryGetPlayerInteractableAtCursor(out IPlayerInteractable playerInteractable);
             if(hoverTarget != playerInteractable)
             {
@@ -32,7 +33,14 @@ namespace JaredGoronkinPrototype2
                 }
             }
         }
-
+        int fNum = 0;
+        public void OnCycleFactions(InputValue value)
+        {
+            Debug.Log("Player Changing factions");
+            fNum++;
+            myFaction = Faction.Factions[fNum % Faction.Factions.Count];
+            fNum = Faction.Factions.IndexOf(myFaction);
+        }
         public void OnLeftClick(InputValue value)
         {
             if( TryGetPlayerInteractableAtCursor(out IPlayerInteractable playerInteractable))
@@ -44,6 +52,7 @@ namespace JaredGoronkinPrototype2
         {
             if (TryGetPlayerInteractableAtCursor(out IPlayerInteractable playerInteractable))
             {
+                Debug.Log("Found a playerInteractable");
                     playerInteractable.OpenInteractionMenu(myFaction);
             }
             

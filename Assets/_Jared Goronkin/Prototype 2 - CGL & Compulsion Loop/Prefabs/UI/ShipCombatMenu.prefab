@@ -147,6 +147,7 @@ GameObject:
   - component: {fileID: 2855290616497493521}
   - component: {fileID: 2855290616497493550}
   - component: {fileID: 2855290616497493551}
+  - component: {fileID: 6615779771834189789}
   m_Layer: 5
   m_Name: ShipCombatMenu
   m_TagString: Untagged
@@ -237,6 +238,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &6615779771834189789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2855290616497493548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f4fa0159f1c8d843b9d730cc94fcb61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2855290617425022727
 GameObject:
   m_ObjectHideFlags: 0
