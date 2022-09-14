@@ -10,7 +10,10 @@ namespace JaredGoronkinPrototype2
 
         public void BuildButton()
         {
-            solarSystem.Settle(PlayerFactionControl.myFaction);
+            if (solarSystem.Settle(PlayerFactionControl.myFaction))
+            {
+                solarSystem.BuildRange.gameObject.SetActive(false);
+            }
         }
         
     }

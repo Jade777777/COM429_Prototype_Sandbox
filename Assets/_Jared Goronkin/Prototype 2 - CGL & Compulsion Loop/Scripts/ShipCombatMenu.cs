@@ -2,17 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShipCombatMenu : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+namespace JaredGoronkinPrototype2
+{
+    public class ShipCombatMenu : MonoBehaviour
     {
-        
+
+        public Ship ship;
+        public void ChooseCombatTarget()
+        {
+
+            Debug.Log("Choose combat target");
+            StartCoroutine(SelectShip());
+
+
+        }
+        IEnumerator SelectShip()
+        {
+            yield return null;
+
+
+            ship.SetCombatTarget(null);
+        }
     }
 }

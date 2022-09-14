@@ -61,7 +61,7 @@ namespace JaredGoronkinPrototype2
             }
 
         }
-        public void Settle(Faction faction)
+        public bool Settle(Faction faction)
         {
 
             if (stats.faction == null && factionsInRange.Contains(faction) && factionsInRange.Count == 1)
@@ -70,7 +70,9 @@ namespace JaredGoronkinPrototype2
                 stats.faction = faction;
                 stats.health = 1f;
                 stats.sheilds = 0f;
+                return true;
             }
+            return false;
 
         }
 
@@ -147,7 +149,14 @@ namespace JaredGoronkinPrototype2
                 {
                     case (Phase.Main):
                         SystemMainUI.SetActive(!SystemMainUI.activeSelf);
-                        BuildRange.gameObject.SetActive(SystemMainUI.activeSelf);
+                        if (stats.faction == null)
+                        {
+                            BuildRange.gameObject.SetActive(SystemMainUI.activeSelf); 
+                        }
+                        else
+                        {
+                            BuildRange.gameObject.SetActive(false);
+                        }
                         CheckSettleRange(PlayerFactionControl.myFaction);
                         break;
                     case (Phase.Combat):
@@ -168,6 +177,7 @@ namespace JaredGoronkinPrototype2
             }
         }
         //-----------
+
         //Game Phase Input
         public void OnMainPhaseStart()
         {
