@@ -14,7 +14,7 @@ public class DrawCircle : MonoBehaviour
     private float Theta;
     LineRenderer lineRenderer;
     Material mat;
-    void Start()
+    void Awake()
     {
         mat = new(Shader.Find("Universal Render Pipeline/Unlit"));
         

@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace JaredGoronkinPrototype2
 {
+    
     [RequireComponent(typeof(Collider))]
     public class Ship : MonoBehaviour, IPlayerInteractable, IPawn
     {
@@ -12,28 +13,35 @@ namespace JaredGoronkinPrototype2
         public GameObject PlayerMainUI;
         public GameObject PlayerCombatUI;
         public GameObject Circle;
+        public GameObject WeaponRange;
+
         public HashSet<Faction> FactionHasScanInfo;
-        
+
+
         public Stats stats = new();
         private Vector3 MoveTarget;
-        private Ship CombatTarget;
+        public Ship CombatTarget;
+
+        public PowerCell pCell;
         public static List<Ship> Ships { get; private set; } = new();
 
         private void Awake()
         {
             Ships.Add(this);
+            pCell = new();
 
         }
-        
+
 
 
         private void OnDestroy()
         {
             Ships.Remove(this);
+            
         }
 
 
-        
+
         //Actions to be taken
         public Vector3 SetMoveTarget(Vector3 target)
         {
@@ -60,17 +68,26 @@ namespace JaredGoronkinPrototype2
         }
 
 
-        
+
 
         public bool SetCombatTarget(Ship ship)
         {
-            if(Vector3.Distance(ship.transform.position,transform.position)<= stats.weaponPower)
+
+            if (CombatTarget != null)
             {
+
+                CombatTarget = null;
+            }
+            if (Vector3.Distance(ship.transform.position, transform.position) <= stats.weaponRange)
+            {
+                Debug.Log("Ship In Range");
                 CombatTarget = ship;
+
                 return true;
             }
             else
             {
+                Debug.Log("failure");
                 return false;
             }
 
@@ -79,20 +96,21 @@ namespace JaredGoronkinPrototype2
         {
             if (CombatTarget != null)
             {
-                //Calculate combat stuff
+                Debug.Log("I'VE GOT A TARGET TIME TO KILL!");
             }
             else
             {
-                //skip combat
+                Debug.Log("I think I will pass, I don't condone violence.");
             }
             CombatTarget = null;
         }
 
 
         //--------------------
+        
 
 
-
+    
 
 
         [System.Serializable]
@@ -125,13 +143,11 @@ namespace JaredGoronkinPrototype2
         public void HoverStart(Faction faction)
         {
             PlayerStatUI.SetActive(true);
-            Debug.Log("Hovering over " + gameObject.name);
         }
         
         public void HoverEnd(Faction faction)
         {
             PlayerStatUI.SetActive(false);
-            Debug.Log("Stopped hovering over " + gameObject.name);
         }
 
 
@@ -148,7 +164,6 @@ namespace JaredGoronkinPrototype2
                 case (Phase.Transition):
                     break;
             }
-            Debug.Log("Opening Interaction menu for " + gameObject.name);
         }
 
         public void Select(Faction faction)
@@ -170,10 +185,13 @@ namespace JaredGoronkinPrototype2
         }
         public void OnCombatPhaseStart()
         {
-
+            WeaponRange.SetActive(true);
+            WeaponRange.GetComponent<DrawCircle>().radius = stats.weaponRange-0.6f;
+            WeaponRange.GetComponent<DrawCircle>().ReDraw();
         }
         public void OnCombatPhaseEnd()
         {
+            WeaponRange.SetActive(false);
             PlayerCombatUI.SetActive(false);
             StartCombat();
             FactionHasScanInfo = new();
@@ -183,4 +201,65 @@ namespace JaredGoronkinPrototype2
  
 
     }
+
+    
+    public class PowerCell
+    {
+        GameObject pCell;
+
+        Vector3 a = new Vector3(-0.5f, 0, 0);
+        Vector3 b = new Vector3(0, Mathf.Sqrt(1.25f), 0);
+        Vector3 c = new Vector3(0.5f, 0, 0);
+
+        float weaponPower = 0;
+        float sheildPower = 0;
+        float thrusterPower = 0;
+
+        Vector3 sliderPosition;
+
+
+        Vector3[] newVertices;
+        Vector2[] newUV;
+        int[] newTriangles;
+
+        public PowerCell()
+        {
+            pCell = new("Power Cell");
+            pCell.AddComponent<MeshFilter>();
+            pCell.AddComponent<MeshRenderer>();
+            MeshCollider col = pCell.AddComponent<MeshCollider>();
+            Mesh mesh = pCell.GetComponent<MeshFilter>().mesh;
+            mesh.Clear();
+
+          
+            mesh.vertices = new Vector3[] { a, b, c };
+            mesh.triangles = new int[] { 0, 1, 2 };
+
+
+            col.sharedMesh = mesh;
+        }
+
+        public void SetSliderPosition()
+        {
+            RaycastHit hit;
+
+            if (!Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
+            {
+                return;
+            }
+
+            MeshCollider meshCollider = hit.collider as MeshCollider;
+            if (hit.collider == null||hit.collider.gameObject!= pCell)
+            {
+                return;
+            }
+
+            Vector3 baryCenter = hit.barycentricCoordinate;
+
+            Debug.Log(hit.barycentricCoordinate);
+        }
+
+
+    }
+
 }

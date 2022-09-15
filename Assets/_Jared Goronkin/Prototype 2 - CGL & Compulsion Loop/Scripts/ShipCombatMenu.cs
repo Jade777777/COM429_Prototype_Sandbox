@@ -9,20 +9,40 @@ namespace JaredGoronkinPrototype2
     {
 
         public Ship ship;
+
+        private void OnEnable()
+        {
+            if (ship.CombatTarget != null)
+            {
+                ship.CombatTarget.Circle.SetActive(true);
+            }
+        }
+        private void OnDisable()
+        {
+            if (ship.CombatTarget != null)
+            {
+                ship.CombatTarget.Circle.SetActive(false);
+            }
+        }
         public void ChooseCombatTarget()
         {
-
-            Debug.Log("Choose combat target");
             StartCoroutine(SelectShip());
-
-
         }
         IEnumerator SelectShip()
         {
-            yield return null;
+            if (ship.CombatTarget != null)
+            {
+                ship.CombatTarget.Circle.SetActive(false);
+            }
+            PlayerFactionControl.lastClickableClicked = null;
 
+            yield return new WaitUntil(() => PlayerFactionControl.lastClickableClicked != null);
+            ship.SetCombatTarget(PlayerFactionControl.lastClickableClicked.GetComponent<Ship>());
 
-            ship.SetCombatTarget(null);
+            if (ship.CombatTarget != null)
+            {
+                ship.CombatTarget.Circle.SetActive(true);
+            }
         }
     }
 }

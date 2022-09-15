@@ -8,14 +8,17 @@ namespace JaredGoronkinPrototype2
     public class PlayerFactionControl : MonoBehaviour
     {
         public static Faction myFaction;
+        public static GameObject lastClickableClicked;
         IPlayerInteractable hoverTarget;
         public TMP_Text Resources;
+        public float camSpeed = 5f;
         private void Awake()
         {
             myFaction = new Faction("Cognition Delegate");
         }
         private void Update()
         {
+            Camera.main.transform.position+=(movement*Time.deltaTime*camSpeed);
             Resources.text = "Resources: " + myFaction.Resources;
             TryGetPlayerInteractableAtCursor(out IPlayerInteractable playerInteractable);
             if(hoverTarget != playerInteractable)
@@ -41,18 +44,26 @@ namespace JaredGoronkinPrototype2
             myFaction = Faction.Factions[fNum % Faction.Factions.Count];
             fNum = Faction.Factions.IndexOf(myFaction);
         }
+        Vector3 movement = Vector3.zero;
+        public void OnMoveCamera(InputValue value)
+        {
+            movement = new Vector3(value.Get<Vector2>().x, 0, value.Get<Vector2>().y);
+        }
+
         public void OnLeftClick(InputValue value)
         {
-            if( TryGetPlayerInteractableAtCursor(out IPlayerInteractable playerInteractable))
+            lastClickableClicked = null;
+            if ( TryGetPlayerInteractableAtCursor(out IPlayerInteractable playerInteractable))
             {
                 playerInteractable.Select(myFaction);
+                lastClickableClicked = (playerInteractable as MonoBehaviour).gameObject;
             }
         }
         public void OnRightClick(InputValue value)
         {
+            lastClickableClicked = null;
             if (TryGetPlayerInteractableAtCursor(out IPlayerInteractable playerInteractable))
             {
-                Debug.Log("Found a playerInteractable");
                     playerInteractable.OpenInteractionMenu(myFaction);
             }
             
@@ -73,6 +84,7 @@ namespace JaredGoronkinPrototype2
 
         private bool TryGetPlayerInteractableAtCursor(out IPlayerInteractable playerInteractable)
         {
+            
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 100)
                 && hit.transform.gameObject.TryGetComponent(out playerInteractable))
             {
