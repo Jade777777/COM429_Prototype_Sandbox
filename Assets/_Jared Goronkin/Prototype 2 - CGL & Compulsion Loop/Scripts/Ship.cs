@@ -28,7 +28,7 @@ namespace JaredGoronkinPrototype2
         private void Awake()
         {
             Ships.Add(this);
-            pCell = new();
+            
 
         }
 
@@ -199,66 +199,6 @@ namespace JaredGoronkinPrototype2
         //-----------
 
  
-
-    }
-
-    
-    public class PowerCell
-    {
-        GameObject pCell;
-
-        Vector3 a = new Vector3(-0.5f, 0, 0);
-        Vector3 b = new Vector3(0, Mathf.Sqrt(1.25f), 0);
-        Vector3 c = new Vector3(0.5f, 0, 0);
-
-        float weaponPower = 0;
-        float sheildPower = 0;
-        float thrusterPower = 0;
-
-        Vector3 sliderPosition;
-
-
-        Vector3[] newVertices;
-        Vector2[] newUV;
-        int[] newTriangles;
-
-        public PowerCell()
-        {
-            pCell = new("Power Cell");
-            pCell.AddComponent<MeshFilter>();
-            pCell.AddComponent<MeshRenderer>();
-            MeshCollider col = pCell.AddComponent<MeshCollider>();
-            Mesh mesh = pCell.GetComponent<MeshFilter>().mesh;
-            mesh.Clear();
-
-          
-            mesh.vertices = new Vector3[] { a, b, c };
-            mesh.triangles = new int[] { 0, 1, 2 };
-
-
-            col.sharedMesh = mesh;
-        }
-
-        public void SetSliderPosition()
-        {
-            RaycastHit hit;
-
-            if (!Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
-            {
-                return;
-            }
-
-            MeshCollider meshCollider = hit.collider as MeshCollider;
-            if (hit.collider == null||hit.collider.gameObject!= pCell)
-            {
-                return;
-            }
-
-            Vector3 baryCenter = hit.barycentricCoordinate;
-
-            Debug.Log(hit.barycentricCoordinate);
-        }
-
 
     }
 
