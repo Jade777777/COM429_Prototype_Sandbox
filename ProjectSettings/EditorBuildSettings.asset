@@ -6,6 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/_Jared Goronkin/Prototype 1 - Base GDD/PrototypeBaseGDD.unity
-    guid: 2621d46fdb125354fbd80e08007e92ea
+    path: Assets/_Jared Goronkin/Prototype 2 - CGL & Compulsion Loop/Scenes/Prototype
+      2.unity
+    guid: 63f2ff6c3f739184bacb4fc97b6129f1
   m_configObjects: {}

@@ -26,6 +26,7 @@ namespace JaredGoronkinPrototype2
         }
         public void ChooseCombatTarget()
         {
+            
             StartCoroutine(SelectShip());
         }
         IEnumerator SelectShip()
@@ -33,6 +34,7 @@ namespace JaredGoronkinPrototype2
             if (ship.CombatTarget != null)
             {
                 ship.CombatTarget.Circle.SetActive(false);
+                ship.CombatTarget = null;
             }
             PlayerFactionControl.lastClickableClicked = null;
 

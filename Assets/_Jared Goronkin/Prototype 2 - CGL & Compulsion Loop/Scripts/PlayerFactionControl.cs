@@ -14,7 +14,7 @@ namespace JaredGoronkinPrototype2
         public float camSpeed = 5f;
         private void Awake()
         {
-            myFaction = new Faction("Cognition Delegate");
+            myFaction = new Faction("CHOAM");
         }
         private void Update()
         {

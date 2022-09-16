@@ -7,26 +7,32 @@ namespace JaredGoronkinPrototype2
     {
         public Ship ship;
         public GameObject target;
-        GameObject targetInstance;
+        public GameObject line;
+        LineRenderer lr;
 
-
+        private void Awake()
+        {
+            
+            
+            lr = line.AddComponent<LineRenderer>();
+            lr.material = new Material(Shader.Find("Legacy Shaders/Particles/Alpha Blended Premultiply"));
+            lr.startColor = new Color32(0x4D, 0xBC, 0x68, 0xFF);
+            lr.endColor = Color.black;
+            lr.startWidth = 0.0f;
+            lr.endWidth = 0.1f;
+            line.SetActive(false);
+            target.SetActive(false);
+        }
         public void SelectMoveTarget()
         {
             StartCoroutine(SelectPosition());
         }
         IEnumerator SelectPosition()
         {
-            Destroy(targetInstance);
-            targetInstance = Instantiate(target);
-
-            
-            LineRenderer lr = targetInstance.AddComponent<LineRenderer>();
-            lr.material = new Material(Shader.Find("Legacy Shaders/Particles/Alpha Blended Premultiply"));
-            lr.startColor = new Color32(0x4D,0xBC,0x68, 0xFF) ;
-            lr.endColor = Color.black;
-            lr.startWidth = 0.0f;
-            lr.endWidth = 0.1f;
-            lr.SetPosition(0, targetInstance.transform.position);
+    
+            target.SetActive(true);
+            line.SetActive(true);
+            lr.SetPosition(0, target.transform.position);
             lr.SetPosition(1, ship.transform.position);
             
         
@@ -37,8 +43,8 @@ namespace JaredGoronkinPrototype2
                 Plane hPlane = new(Vector3.up, Vector3.zero);
                 hPlane.Raycast(ray, out float distance);
                 Vector3 targetPosition = ray.GetPoint(distance);
-                targetInstance.transform.position = ship.SetMoveTarget(targetPosition);
-                lr.SetPosition(0, targetInstance.transform.position);
+                target.transform.position = ship.SetMoveTarget(targetPosition);
+                lr.SetPosition(0, target.transform.position);
                 yield return null;
 
             } while (!Input.GetMouseButtonUp(0));
@@ -68,7 +74,8 @@ namespace JaredGoronkinPrototype2
         public void OnMainPhaseEnd()
         {
             Debug.Log("destorying this thing $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-            Destroy(targetInstance);
+            target.SetActive(false);
+            line.SetActive(false);
         }
 
         public void OnMainPhaseStart()

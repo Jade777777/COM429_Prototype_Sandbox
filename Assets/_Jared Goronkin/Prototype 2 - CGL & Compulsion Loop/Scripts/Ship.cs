@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace JaredGoronkinPrototype2
@@ -10,6 +11,7 @@ namespace JaredGoronkinPrototype2
     {
 
         public GameObject PlayerStatUI;
+        public TMP_Text PlayerStatText;
         public GameObject PlayerMainUI;
         public GameObject PlayerCombatUI;
         public GameObject Circle;
@@ -46,7 +48,7 @@ namespace JaredGoronkinPrototype2
         public Vector3 SetMoveTarget(Vector3 target)
         {
             target.y = 0;
-            MoveTarget = Vector3.MoveTowards(transform.position, target, stats.warpRange);
+            MoveTarget = Vector3.MoveTowards(transform.position, target, stats.warpRange*pCell.thrusterPower);
             return MoveTarget;
         }
         IEnumerator Move()
@@ -96,6 +98,7 @@ namespace JaredGoronkinPrototype2
         {
             if (CombatTarget != null)
             {
+                CombatTarget.DealDamage(stats.weaponPower * pCell.weaponPower);
                 Debug.Log("I'VE GOT A TARGET TIME TO KILL!");
             }
             else
@@ -104,7 +107,29 @@ namespace JaredGoronkinPrototype2
             }
             CombatTarget = null;
         }
+        public void RegenSheilds()
+        {
+            stats.sheilds += stats.sheildRegen * pCell.sheildPower;
+            stats.sheilds = Mathf.Clamp(stats.sheilds, 0, stats.maxSheilds);
+            if (stats.health <= 0)
+            {
+                Destroy(gameObject);
+            }
+        }
+        public void DealDamage(float damage)
+        {
+            stats.sheilds -= damage;
+            if (stats.sheilds < 0)
+            {
+                stats.health += stats.sheilds;
+                stats.sheilds = 0;
+            }
+            if (stats.health < 0)
+            {
+                Debug.Log("Uh oh...");
+            }
 
+        }
 
         //--------------------
         
@@ -119,16 +144,24 @@ namespace JaredGoronkinPrototype2
             public Faction faction;
             public float health;
             public float sheilds;
+            public float maxSheilds;
+            public float sheildRegen;
             public float weaponPower;
             public float weaponRange;
-            public float thrusters;
 
             public bool scanners;
             public float scannerRange;
 
             public float warpRange;
         }
-
+        private void Update()
+        {
+            PlayerStatText.text =
+                "Faction: " + stats.faction.Name + "\n" +
+                "Health: " + stats.health + "\n" +
+                "Sheilds: " + stats.sheilds + "\n" +
+                "";
+        }
         private void Start()
         {
             MoveTarget = transform.position;
@@ -175,7 +208,7 @@ namespace JaredGoronkinPrototype2
         //Game Phase Input
         public void OnMainPhaseStart()
         {
-
+            RegenSheilds();
         }
         public void OnMainPhaseEnd()
         {

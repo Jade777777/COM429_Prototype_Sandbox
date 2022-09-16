@@ -15,16 +15,35 @@ public class PowerCell : MonoBehaviour
     public Color bColor;
     public Color cColor;
 
-    public Vector3 SliderPosition;
+    public Vector3 sliderPosition;
 
-    float weaponPower = 0;
-    float sheildPower = 0;
-    float thrusterPower = 0;
+    public float weaponPower  { get; private set; }
+    public float sheildPower  { get; private set; }
+    public float thrusterPower  { get; private set; }
 
+    public GameObject slider;
+
+
+    private void Start()
+    {
+        //if (Application.IsPlaying(gameObject))
+        {
+            ResetPowerCell();
+        }
+    }
+
+    private void ResetPowerCell()
+    {
+        sliderPosition = (a + b + c) / 3;
+        weaponPower = 0.333f;
+        sheildPower = 0.333f;
+        thrusterPower = 0.333f;
+        slider.transform.localPosition = sliderPosition;
+    }
 
     MeshCollider col;
     MeshFilter meshFilter;
-    MeshRenderer meshRenderer;
+
     Mesh mesh;
     private void UpdatePowerCell()
     {
@@ -32,14 +51,9 @@ public class PowerCell : MonoBehaviour
         col = gameObject.GetComponent<MeshCollider>();
         col.convex = false;
         meshFilter = gameObject.GetComponent<MeshFilter>();
-        meshRenderer = gameObject.GetComponent<MeshRenderer>();
-        
 
 
-        if (meshRenderer.sharedMaterial == null)
-        {
-            meshRenderer.sharedMaterial = new(Shader.Find("Universal Render Pipeline/Particles/Unlit"));
-        }
+
         if (meshFilter.sharedMesh == null)
         {
             mesh = new Mesh();
@@ -75,23 +89,23 @@ public class PowerCell : MonoBehaviour
     }
     public void SetSliderPosition()
     {
-        RaycastHit hit;
-
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Plane tPlane = new Plane(transform.TransformPoint(a), transform.TransformPoint(b), transform.TransformPoint(c));
+        Plane tPlane = new(transform.TransformPoint(a), transform.TransformPoint(b), transform.TransformPoint(c));
         tPlane.Raycast(ray, out float distance);
-        Vector3 targetPosition = ray.GetPoint(distance);
-        targetPosition = transform.InverseTransformPoint(targetPosition);
-        Debug.Log("Hit on plane: " + targetPosition);
+        Vector3 globalTarget = ray.GetPoint(distance);
+        Vector3 localTarget = transform.InverseTransformPoint(globalTarget);
+        Debug.Log("Hit on plane: " + localTarget);
 
-        if (!Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)
+
+
+        if (!Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit)
             || hit.collider == null 
             || hit.collider.gameObject != gameObject)
         {
             return;
         }
 
-        SliderPosition = transform.InverseTransformPoint(hit.point);
+        slider.transform.localPosition = localTarget;
 
         Vector3 baryCenter = hit.barycentricCoordinate;
         sheildPower = baryCenter.x;
