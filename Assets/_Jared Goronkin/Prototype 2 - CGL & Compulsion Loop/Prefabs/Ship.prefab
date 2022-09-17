@@ -190,7 +190,7 @@ MonoBehaviour:
     health: 1
     sheilds: 2
     maxSheilds: 2
-    sheildRegen: 0.25
+    sheildRegen: 1
     weaponPower: 1
     weaponRange: 4
     scanners: 0
