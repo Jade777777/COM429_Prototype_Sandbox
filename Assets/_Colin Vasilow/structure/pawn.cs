@@ -7,6 +7,9 @@ public class pawn : MonoBehaviour
 
     //public variables
     public GameObject simulation;
+    void Start(){
+        simulation = GameObject.FindGameObjectWithTag("Universe");
+    }
 
     public void getPawnActions() {
         return;

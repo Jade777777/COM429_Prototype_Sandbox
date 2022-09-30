@@ -35,6 +35,9 @@ public class universeGeneration : MonoBehaviour
                     for (int l = 0; l < ZONE_SIZE; l++) {
                         Vector3 zonePosition = new Vector3((j * ZONE_SIZE) * SQUARE_SIZE + l * SQUARE_SIZE, 0, (i * ZONE_SIZE) * SQUARE_SIZE + k * SQUARE_SIZE);
                         GameObject newZone = Instantiate(zones[Random.Range(0, zones.Length)]);
+                        if (newZone.tag == "System") {
+                            newZone.GetComponent<planet>().generateStructure(Random.Range(0,3), Random.Range(0,3), Random.Range(0,2));
+                        }
                         newZone.transform.position = zonePosition;
                         newZone.transform.SetParent(transform);
                         newZone.name = ("Space Zone " + (zonesGenerated) + ": (" + k + "," + l + ")");

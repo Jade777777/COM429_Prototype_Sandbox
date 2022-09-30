@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class mine : planetaryStructure
 {
-    public string giveDescription(){
+    public mine(GameObject parentPlanet) {
+        parentSystem = parentPlanet;
+    }
+
+    public override string giveDescription(){
         return "mine";
     }
 }
