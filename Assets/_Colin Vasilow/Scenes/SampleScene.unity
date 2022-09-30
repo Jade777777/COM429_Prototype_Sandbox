@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 228040951}
   m_Layer: 0
   m_Name: UniverseGeneration
-  m_TagString: Untagged
+  m_TagString: Universe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -161,6 +161,9 @@ MonoBehaviour:
   - {fileID: 697928828035318431, guid: a9d50eba782416444904f5808db556e6, type: 3}
   - {fileID: 697928828035318431, guid: a9d50eba782416444904f5808db556e6, type: 3}
   - {fileID: 697928828035318431, guid: a9d50eba782416444904f5808db556e6, type: 3}
+  typesOfStructures:
+  - {fileID: 1177545026717906636, guid: 60fceee6998c97e4e902e5832ecd4a39, type: 3}
+  - {fileID: 1177545026717906636, guid: 2fa567b92dc12244489f061e7ea377f0, type: 3}
 --- !u!4 &228040952
 Transform:
   m_ObjectHideFlags: 0

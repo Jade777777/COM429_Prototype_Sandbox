@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class spaceZoneGen : MonoBehaviour
 {
-    //constants
-    private const int sideLength = 3;
     //public variables
     public GameObject[] tiles;
+    public GameObject[] typesOfStructures;
     //private variables
     private int numberOfToSq;
 

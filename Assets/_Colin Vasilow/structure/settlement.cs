@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class settlement : planetaryStructure
 {
-    public string giveDescription(){
+    public settlement(GameObject parentPlanet) {
+        parentSystem = parentPlanet;
+    }
+
+    public override string giveDescription(){
         return "settlement";
     }
 }
