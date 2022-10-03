@@ -9,4 +9,10 @@ EditorBuildSettings:
     path: Assets/_Jared Goronkin/Prototype 2 - CGL & Compulsion Loop/Scenes/Prototype
       2.unity
     guid: 63f2ff6c3f739184bacb4fc97b6129f1
+  - enabled: 1
+    path: Assets/_Ryan Beckett/Scenes/StartMenu.unity
+    guid: c43231165e1077145a455664fc6d0cdf
+  - enabled: 1
+    path: Assets/_Ryan Beckett/Scenes/GameOverMenu.unity
+    guid: c2be33652bd475f4da654de9a868a4e1
   m_configObjects: {}

@@ -10,4 +10,10 @@ public class StartMenuGroup : MonoBehaviour
         scene = ("Assets/_Ryan Beckett/Scenes/GameOverMenu.unity");
         SceneManager.LoadScene(scene);
    }
+
+   public void QuitGame()
+   {
+      Application.Quit();
+      Debug.Log("Game is exiting");
+   }
 }
